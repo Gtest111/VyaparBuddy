@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-light">
+
+    <!-- Include Navbar -->
+    <%- include("partials/navbar") %>
+
+    <div class="container py-5">
+        <div class="row mb-4"> 
+            <div class="col-md-8">
+                <h1 class="fw-bold text-primary">Customer Engagement</h1>
+                <p class="lead text-muted">Track and optimize your social media engagement</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-calendar me-2"></i>Time Period
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item active" href="#">Last 30 Days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 90 Days</a></li>
+                        <li><a class="dropdown-item" href="#">Last 6 Months</a></li>
+                        <li><a class="dropdown-item" href="#">Last Year</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Custom Range</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Engagement Metrics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4 col-lg-2 mb-3">
+                <div class="card shadow-sm border-0 rounded-3 h-100 dashboard-stat-card">
+                    <div class="stat-icon text-primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value text-primary"><%= engagementData.metrics.totalFollowers.toLocaleString() %></div>
+                    <div class="stat-label">Followers</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2 mb-3">
+                <div class="card shadow-sm border-0 rounded-3 h-100 dashboard-stat-card">
+                    <div class="stat-icon text-danger">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-value text-danger"><%= engagementData.metrics.averageLikes.toLocaleString() %></div>
+                    <div class="stat-label">Avg. Likes</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2 mb-3">
+                <div class="card shadow-sm border-0 rounded-3 h-100 dashboard-stat-card">
+                    <div class="stat-icon text-info">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="stat-value text-info"><%= engagementData.metrics.averageComments.toLocaleString() %></div>
+                    <div class="stat-label">Avg. Comments</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2 mb-3">
+                <div class="card shadow-sm border-0 rounded-3 h-100 dashboard-stat-card">
+                    <div class="stat-icon text-success">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="stat-value text-success"><%= engagementData.metrics.averageShares.toLocaleString() %></div>
+                    <div class="stat-label">Avg. Shares</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 mb-3">
+                <div class="card shadow-sm border-0 rounded-3 h-100 dashboard-stat-card">
+                    <div class="stat-icon text-warning">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value text-warning"><%= engagementData.metrics.engagementRate %>%</div>
+                    <div class="stat-label">Engagement Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Engagement Trends Chart -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-chart-line me-2"></i>Engagement Trends
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="engagementChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recommendations Card -->
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>Recommendations
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <% engagementData.recommendations.forEach(recommendation => { %>
+                                <li class="list-group-item border-0 ps-0">
+                                    <i class="fas fa-check-circle text-success me-2"></i><%= recommendation %>
+                                </li>
+                            <% }); %>
+                        </ul>
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#contentIdeasModal">
+                                <i class="fas fa-magic me-2"></i>Generate Content Ideas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Posts Section -->
+        <div class="card shadow-sm border-0 rounded-3 mt-2">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-list me-2"></i>Recent Posts
+                </h3>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-sort me-1"></i>Sort By
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item active" href="#">Date (Newest)</a></li>
+                        <li><a class="dropdown-item" href="#">Date (Oldest)</a></li>
+                        <li><a class="dropdown-item" href="#">Most Likes</a></li>
+                        <li><a class="dropdown-item" href="#">Most Comments</a></li>
+                        <li><a class="dropdown-item" href="#">Most Shares</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <% if (engagementData.recentPosts && engagementData.recentPosts.length > 0) { %>
+                    <ul class="list-group list-group-flush">
+                        <% engagementData.recentPosts.forEach((post, index) => { %>
+                            <li class="list-group-item p-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="mb-2 post-content"><%= post.content %></p>
+                                        <small class="text-muted">
+                                            <i class="far fa-clock me-1"></i><%= post.date.toLocaleString() %>
+                                        </small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="engagement-stat">
+                                                <i class="fas fa-heart text-danger"></i>
+                                                <span><%= post.likes %></span>
+                                            </div>
+                                            <div class="engagement-stat">
+                                                <i class="fas fa-comment text-primary"></i>
+                                                <span><%= post.comments %></span>
+                                            </div>
+                                            <div class="engagement-stat">
+                                                <i class="fas fa-share-alt text-success"></i>
+                                                <span><%= post.shares %></span>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#postAnalyticsModal<%= index %>">
+                                                <i class="fas fa-chart-bar"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }); %>
+                    </ul>
+                <% } else { %>
+                    <div class="text-center p-4">
+                        <img src="/api/placeholder/200/160" alt="No posts" class="mb-3" />
+                        <h5>No recent posts</h5>
+                        <p class="text-muted">Start creating engaging content!</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Ideas Modal -->
+    <div class="modal fade" id="contentIdeasModal" tabindex="-1" aria-labelledby="contentIdeasModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contentIdeasModalLabel">Content Ideas Generator</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="contentType" class="form-label">Content Type</label>
+                        <select class="form-select" id="contentType">
+                            <option value="all">All Types</option>
+                            <option value="image">Image Posts</option>
+                            <option value="video">Video Posts</option>
+                            <option value="carousel">Carousel Posts</option>
+                            <option value="story">Stories</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contentTopic" class="form-label">Topic</label>
+                        <input type="text" class="form-control" id="contentTopic" placeholder="Enter a topic or keyword">
+                    </div>
+                    <div class="mb-3">
+                        <label for="contentGoal" class="form-label">Goal</label>
+                        <select class="form-select" id="contentGoal">
+                            <option value="engagement">Increase Engagement</option>
+                            <option value="awareness">Brand Awareness</option>
+                            <option value="sales">Drive Sales</option>
+                            <option value="followers">Gain Followers</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary w-100">Generate Ideas</button>
+                    
+                    <hr>
+                    
+                    <h5 class="mb-3">Content Ideas</h5>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Behind-the-Scenes Tour</h6>
+                            <p class="mb-1">Show your followers how your products are made or give them a tour of your office.</p>
+                            <small class="text-muted">Recommended format: Video or Carousel</small>
+                        </div>
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Customer Testimonial Spotlight</h6>
+                            <p class="mb-1">Share positive feedback from satisfied customers with their permission.</p>
+                            <small class="text-muted">Recommended format: Image or Carousel</small>
+                        </div>
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Product Tutorial</h6>
+                            <p class="mb-1">Create a step-by-step guide showing how to use your product effectively.</p>
+                            <small class="text-muted">Recommended format: Video</small>
+                        </div>
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Industry Tips & Tricks</h6>
+                            <p class="mb-1">Share valuable insights related to your industry to position yourself as an expert.</p>
+                            <small class="text-muted">Recommended format: Carousel</small>
+                        </div>
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Interactive Poll or Question</h6>
+                            <p class="mb-1">Ask your audience a question to encourage engagement and learn more about them.</p>
+                            <small class="text-muted">Recommended format: Story</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save Ideas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script>
+        // Engagement Chart
+        const ctx = document.getElementById('engagementChart').getContext('2d');
+        const engagementChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [
+                    {
+                        label: 'Likes',
+                        data: [250, 290, 320, 310, 342, 390, 420],
+                        borderColor: '#E53E3E',
+                        backgroundColor: 'rgba(229, 62, 62, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Comments',
+                        data: [30, 40, 35, 45, 48, 52, 60],
+                        borderColor: '#4A6FDC',
+                        backgroundColor: 'rgba(74, 111, 220, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Shares',
+                        data: [10, 12, 14, 13, 15, 18, 20],
+                        borderColor: '#38B2AC',
+                        backgroundColor: 'rgba(56, 178, 172, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: 'Engagement Trends'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

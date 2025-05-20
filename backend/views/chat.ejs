@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<%- include('partials/navbar') %>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - SmartAdMate</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .chat-container {
+            max-width: 900px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+        }
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: #3498db;
+            color: white;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #e9ecef;
+            color: #212529;
+        }
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #e9ecef;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .chat-input button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .chat-input button:hover {
+            background-color: #2980b9;
+        }
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            padding: 10px 15px;
+            overflow-x: auto;
+            background-color: white;
+            border-top: 1px solid #e9ecef;
+        }
+        .suggestion {
+            padding: 8px 15px;
+            background-color: #eaf2fa;
+            border-radius: 15px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .suggestion:hover {
+            background-color: #d5e8f9;
+        }
+        .typing-indicator {
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    
+    
+    <div class="container">
+        <h1>AI Marketing Assistant</h1>
+        <p>Ask your marketing assistant for help with content creation, strategy, or social media tips.</p>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <strong>Marketing Assistant</strong>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hi there! I'm your marketing assistant. How can I help you today?
+                </div>
+                
+                <div class="typing-indicator" id="typingIndicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <div class="suggestions">
+                <div class="suggestion" onclick="suggestPrompt(this)">Generate content ideas</div>
+                <div class="suggestion" onclick="suggestPrompt(this)">Help with hashtags</div>
+                <div class="suggestion" onclick="suggestPrompt(this)">Social media strategy</div>
+                <div class="suggestion" onclick="suggestPrompt(this)">Improve my caption</div>
+                <div class="suggestion" onclick="suggestPrompt(this)">Audience targeting tips</div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="userMessage" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+        // Store conversation history
+        let conversationHistory = [
+            { role: "system", content: "You are a helpful marketing assistant for SmartAdMate, a social media scheduling and content generation platform. Provide concise, practical advice about social media marketing, content creation, and audience engagement. Keep responses brief and actionable." },
+            { role: "assistant", content: "Hi there! I'm your marketing assistant. How can I help you today?" }
+        ];
+        
+        function showTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.style.display = 'none';
+        }
+        
+        async function sendMessage() {
+            const userMessageInput = document.getElementById('userMessage');
+            const chatMessages = document.getElementById('chatMessages');
+            const userMessage = userMessageInput.value.trim();
+            
+            if (!userMessage) return;
+            
+            // Add user message to UI
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user-message';
+            userMessageElement.textContent = userMessage;
+            chatMessages.insertBefore(userMessageElement, document.getElementById('typingIndicator'));
+            
+            // Clear input
+            userMessageInput.value = '';
+            
+            // Add to conversation history
+            conversationHistory.push({ role: "user", content: userMessage });
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            try {
+                // Call API to get response
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ messages: conversationHistory })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                // Hide typing indicator
+                hideTypingIndicator();
+                
+                // Add bot response to UI
+                const botMessageElement = document.createElement('div');
+                botMessageElement.className = 'message bot-message';
+                botMessageElement.textContent = data.message;
+                chatMessages.appendChild(botMessageElement);
+                
+                // Add to conversation history
+                conversationHistory.push({ role: "assistant", content: data.message });
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                hideTypingIndicator();
+                
+                // Show error message
+                const errorMessageElement = document.createElement('div');
+                errorMessageElement.className = 'message bot-message';
+                errorMessageElement.textContent = "Sorry, I'm having trouble connecting right now. Please try again later.";
+                chatMessages.appendChild(errorMessageElement);
+                
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function suggestPrompt(element) {
+            const userMessageInput = document.getElementById('userMessage');
+            userMessageInput.value = element.textContent;
+            userMessageInput.focus();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+  <div class="container">
+      <!-- Logo and Brand -->
+      <a class="navbar-brand fw-bold" href="/home">
+          <i class="fas fa-chart-line me-2"></i>Vyapaar Buddy
+      </a>
+
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" aria-controls="navbarNav" 
+              aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="/features">Features</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/pricing">Pricing</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/scheduler">Social Media Scheduler</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/suggest">Caption Generator</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/budget">Budget Optimizer</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/engagement">Customer Engagement</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/chat">AI Assistant</a>
+              </li>
+
+              <!-- Conditional Navigation -->
+              <% if (!user) { %>
+                  <li class="nav-item">
+                      <a class="nav-link btn btn-outline-light btn-sm ms-2 px-3" href="/login">Login</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link btn btn-light text-primary btn-sm ms-2 px-3" href="/signup">Sign Up</a>
+                  </li>
+              <% } else { %>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                         data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fas fa-user-circle me-1"></i><%= user.username %>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                          <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                          <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                      </ul>
+                  </li>
+              <% } %>
+          </ul>
+      </div>
+  </div>
+</nav>

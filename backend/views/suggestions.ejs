@@ -1,0 +1,91 @@
+<!-- Generate AI Content Card -->
+<div class="col-lg-6 mb-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-success text-white">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-robot me-2"></i>Generate AI Content
+            </h3>
+        </div>
+        <div class="card-body">
+            <form action="/generate" method="POST">
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description or Keywords</label>
+                    <textarea name="description" id="description" class="form-control" rows="3" placeholder="Enter image description or keywords" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="contentType" class="form-label">Content Type</label>
+                    <select name="contentType" id="contentType" class="form-select">
+                        <option value="both">Caption & Hashtags</option>
+                        <option value="caption">Caption Only</option>
+                        <option value="hashtags">Hashtags Only</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100">
+                    <i class="fas fa-magic me-2"></i>Generate Content
+                </button>
+            </form>
+
+            <!-- Display AI-generated content -->
+            <% if ((captions && captions.length > 0) || (hashtags && hashtags.length > 0)) { %>
+                <div class="mt-4 p-3 bg-light rounded">
+                    
+                    <!-- Display Captions -->
+                    <% if (captions && captions.length > 0) { %>
+                        <div class="mb-3">
+                            <h5 class="text-success">
+                                <i class="fas fa-comment-alt me-2"></i>Generated Captions
+                            </h5>
+                            <div class="p-3 bg-white rounded border">
+                                <ul class="mb-0">
+                                    <% captions.forEach(cap => { %>
+                                        <li><%= cap %></li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="copyCaptions()">
+                                <i class="fas fa-copy me-1"></i>Copy
+                            </button>
+                        </div>
+                    <% } %>
+            
+                    <!-- Display Hashtags -->
+                    <% if (hashtags && hashtags.length > 0) { %>
+                        <div>
+                            <h5 class="text-success">
+                                <i class="fas fa-hashtag me-2"></i>Generated Hashtags
+                            </h5>
+                            <div class="p-3 bg-white rounded border">
+                                <p class="mb-0" id="hashtagsText">
+                                    <% hashtags.forEach(tag => { %>
+                                        <span class="badge bg-primary me-1">#<%= tag %></span>
+                                    <% }) %>
+                                </p>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="copyHashtags()">
+                                <i class="fas fa-copy me-1"></i>Copy
+                            </button>
+                        </div>
+                    <% } %>
+
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<!-- Copy Functions -->
+<script>
+    function copyCaptions() {
+        const captions = "<%= captions.join('\\n') %>";
+        navigator.clipboard.writeText(captions).then(() => {
+            alert("Captions copied!");
+        });
+    }
+
+    function copyHashtags() {
+        const hashtags = "<%= hashtags.map(tag => `#${tag}`).join(' ') %>";
+        navigator.clipboard.writeText(hashtags).then(() => {
+            alert("Hashtags copied!");
+        });
+    }
+</script>

@@ -1,0 +1,19 @@
+<%- include("partials/navbar") %>
+
+<div class="container mt-4">
+    <h2><%= post.postContent %></h2>
+    <p><strong>Views:</strong> <%= post.views %></p>
+    <p><strong>Likes:</strong> <span id="like-count"><%= post.likes %></span></p>
+
+    <button id="like-button" class="btn btn-primary">❤️ Like</button>
+</div>
+
+<script>
+    document.getElementById("like-button").addEventListener("click", async () => {
+        const response = await fetch("/post/<%= post._id %>/like", { method: "POST" });
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById("like-count").innerText = data.likes;
+        }
+    });
+</script>

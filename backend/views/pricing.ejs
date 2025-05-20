@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - SmartAdMate</title>
+  <style>
+    :root {
+      --primary-color: #4A6FDC;
+      --secondary-color: #F8F9FA;
+      --accent-color: #25D366;
+      --dark-color: #343A40;
+      --light-color: #FFFFFF;
+      --border-color: #E9ECEF;
+      --text-color: #495057;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--secondary-color);
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .header {
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      padding: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    
+    .header p {
+      margin-top: 1rem;
+      font-size: 1.25rem;
+      opacity: 0.9;
+    }
+    
+    .pricing-section {
+      padding: 5rem 0;
+    }
+    
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .pricing-header h2 {
+      font-size: 2.5rem;
+      color: var(--dark-color);
+      margin-bottom: 1rem;
+    }
+    
+    .pricing-header p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .pricing-toggle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2rem 0;
+    }
+    
+    .toggle-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      margin: 0 15px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background-color: var(--primary-color);
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    
+    .pricing-plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 2rem;
+    }
+    
+    .plan-card {
+      background-color: var(--light-color);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .popular-badge {
+      position: absolute;
+      top: 15px;
+      right: -30px;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 5px 40px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      transform: rotate(45deg);
+    }
+    
+    .plan-name {
+      font-size: 1.5rem;
+      color: var(--dark-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .plan-price {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin: 1rem 0;
+    }
+    
+    .plan-price .period {
+      font-size: 1rem;
+      color: var(--text-color);
+      font-weight: normal;
+    }
+    
+    .plan-description {
+      margin-bottom: 2rem;
+      color: var(--text-color);
+    }
+    
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+      text-align: left;
+    }
+    
+    .plan-features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .plan-features li:last-child {
+      border-bottom: none;
+    }
+    
+    .feature-check {
+      color: var(--accent-color);
+      margin-right: 10px;
+    }
+    
+    .feature-cross {
+      color: #dc3545;
+      margin-right: 10px;
+    }
+    
+    .plan-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    
+    .plan-btn:hover {
+      background-color: #3A5FC8;
+    }
+    
+    .secondary-btn {
+      background-color: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .secondary-btn:hover {
+      background-color: rgba(74, 111, 220, 0.1);
+    }
+    
+    .faq-section {
+      padding: 4rem 0;
+      background-color: var(--light-color);
+    }
+    
+    .faq-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .faq-header h2 {
+      font-size: 2.5rem;
+      color: var(--dark-color);
+    }
+    
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+    }
+    
+    .faq-question {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dark-color);
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .faq-answer {
+      margin-top: 0.75rem;
+    }
+    
+    .cta-section {
+      padding: 5rem 0;
+      text-align: center;
+      background-color: var(--primary-color);
+      color: var(--light-color);
+    }
+    
+    .cta-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta-description {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto 2rem auto;
+      opacity: 0.9;
+    }
+    
+    .cta-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background-color: var(--light-color);
+      color: var(--primary-color);
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    
+    .cta-btn:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .footer {
+      background-color: var(--dark-color);
+      color: var(--light-color);
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-links a {
+      color: var(--light-color);
+      text-decoration: none;
+      margin: 0 1rem;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      opacity: 1;
+    }
+    
+    .copyright {
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .pricing-plans {
+        grid-template-columns: 1fr;
+      }
+      
+      .plan-card {
+        margin-bottom: 2rem;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .pricing-header h2, .faq-header h2, .cta-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>SmartAdMate Pricing</h1>
+      <p>Choose the perfect plan for your content marketing needs</p>
+    </div>
+  </header>
+  
+  <section class="pricing-section">
+    <div class="container">
+      <div class="pricing-header">
+        <h2>Simple, Transparent Pricing</h2>
+        <p>Whether you're a solo creator or managing a team's content, we have the right plan for you.</p>
+      </div>
+      
+      <div class="pricing-toggle">
+        <span class="toggle-label">Monthly</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="pricing-toggle">
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label">Annually <span style="color: var(--accent-color);">(Save 20%)</span></span>
+      </div>
+      
+      <div class="pricing-plans">
+        <!-- Free Plan -->
+        <div class="plan-card">
+          <h3 class="plan-name">Free</h3>
+          <div class="plan-price">$0<span class="period">/month</span></div>
+          <p class="plan-description">Perfect for individuals just getting started</p>
+          <ul class="plan-features">
+            <li><span class="feature-check">✓</span> Schedule up to 10 posts</li>
+            <li><span class="feature-check">✓</span> Basic AI content generation</li>
+            <li><span class="feature-check">✓</span> Single platform integration</li>
+            <li><span class="feature-cross">✗</span> Advanced analytics</li>
+            <li><span class="feature-cross">✗</span> Team collaboration</li>
+            <li><span class="feature-cross">✗</span> Priority support</li>
+          </ul>
+          <a href="/signup" class="plan-btn secondary-btn">Start for Free</a>
+        </div>
+        
+        <!-- Pro Plan -->
+        <div class="plan-card">
+          <div class="popular-badge">POPULAR</div>
+          <h3 class="plan-name">Pro</h3>
+          <div class="plan-price">$29<span class="period">/month</span></div>
+          <p class="plan-description">For growing creators and small businesses</p>
+          <ul class="plan-features">
+            <li><span class="feature-check">✓</span> Unlimited scheduled posts</li>
+            <li><span class="feature-check">✓</span> Advanced AI content generation</li>
+            <li><span class="feature-check">✓</span> Multi-platform integration</li>
+            <li><span class="feature-check">✓</span> Comprehensive analytics</li>
+            <li><span class="feature-check">✓</span> Up to 3 team members</li>
+            <li><span class="feature-check">✓</span> Email support</li>
+          </ul>
+          <a href="/signup?plan=pro" class="plan-btn">Get Started</a>
+        </div>
+        
+        <!-- Business Plan -->
+        <div class="plan-card">
+          <h3 class="plan-name">Business</h3>
+          <div class="plan-price">$79<span class="period">/month</span></div>
+          <p class="plan-description">For larger teams and agencies</p>
+          <ul class="plan-features">
+            <li><span class="feature-check">✓</span> Unlimited scheduled posts</li>
+            <li><span class="feature-check">✓</span> Premium AI content generation</li>
+            <li><span class="feature-check">✓</span> All platform integrations</li>
+            <li><span class="feature-check">✓</span> Advanced analytics & reports</li>
+            <li><span class="feature-check">✓</span> Unlimited team members</li>
+            <li><span class="feature-check">✓</span> Priority 24/7 support</li>
+          </ul>
+          <a href="/signup?plan=business" class="plan-btn">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="faq-section">
+    <div class="container">
+      <div class="faq-header">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      
+      <div class="faq-container">
+        <div class="faq-item">
+          <div class="faq-question">
+            Can I switch plans later?
+          </div>
+          <div class="faq-answer">
+            Absolutely! You can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated amount for the remainder of your billing cycle. When downgrading, the new rate will apply at the start of your next billing cycle.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            What payment methods do you accept?
+          </div>
+          <div class="faq-answer">
+            We accept all major credit cards including Visa, Mastercard, American Express, and Discover. We also support PayPal for your convenience.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Is there a contract or commitment?
+          </div>
+          <div class="faq-answer">
+            No, all SmartAdMate plans are subscription-based with no long-term contracts. You can cancel at any time without penalty. We believe our service should speak for itself!
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            How does the AI content generation work?
+          </div>
+          <div class="faq-answer">
+            Our AI content generation uses advanced natural language processing to create engaging social media posts, captions, and hashtags based on your input. The Pro and Business plans include more sophisticated AI models that produce higher quality content with more customization options.
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Do you offer a free trial of paid plans?
+          </div>
+          <div class="faq-answer">
+            Yes! We offer a 14-day free trial of our Pro plan so you can experience all the premium features before committing. No credit card is required to start your trial.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">Ready to Elevate Your Social Media Strategy?</h2>
+      <p class="cta-description">Join thousands of creators and businesses already using SmartAdMate to streamline their content marketing.</p>
+      <a href="/signup" class="cta-btn">Start Your Free Trial</a>
+    </div>
+  </section>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/blog">Blog</a>
+      </div>
+      <p class="copyright">© 2025 SmartAdMate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle between monthly and annual pricing
+    document.getElementById('pricing-toggle').addEventListener('change', function() {
+      const prices = document.querySelectorAll('.plan-price');
+      const isAnnual = this.checked;
+      
+      if (isAnnual) {
+        // Switch to annual pricing (20% discount)
+        prices[0].innerHTML = '$0<span class="period">/year</span>';
+        prices[1].innerHTML = '$279<span class="period">/year</span>';
+        prices[2].innerHTML = '$758<span class="period">/year</span>';
+      } else {
+        // Switch to monthly pricing
+        prices[0].innerHTML = '$0<span class="period">/month</span>';
+        prices[1].innerHTML = '$29<span class="period">/month</span>';
+        prices[2].innerHTML = '$79<span class="period">/month</span>';
+      }
+    });
+    
+    // Simple FAQ toggle
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

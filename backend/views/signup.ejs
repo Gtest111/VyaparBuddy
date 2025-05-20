@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Vyapaar Buddy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --secondary: #F59E0B;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+            --success: #10B981;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .brand-name {
+            font-weight: 800;
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-container {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .left-panel {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .left-panel h2 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .left-panel p {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-icon {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 3rem 2rem;
+        }
+        
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-floating > label {
+            color: var(--text-light);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            padding: 0.8rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.2s ease;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .google {
+            background-color: #DB4437;
+        }
+        
+        .facebook {
+            background-color: #4267B2;
+        }
+        
+        .twitter {
+            background-color: #1DA1F2;
+        }
+        
+        .login-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link:hover {
+            text-decoration: underline;
+        }
+        
+        .input-group-text {
+            cursor: pointer;
+            background-color: transparent;
+            border-left: none;
+        }
+        
+        .password-toggle {
+            border-left: 0;
+        }
+        
+        .password-field {
+            border-right: 0;
+        }
+        
+        @media (max-width: 991.98px) {
+            .left-panel {
+                padding: 2rem;
+            }
+            
+            .form-section {
+                padding: 2rem;
+            }
+        }
+        
+        /* Animation effects */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="signup-container row g-0">
+                    <!-- Left panel with features -->
+                    <div class="col-lg-5 left-panel">
+                        <div class="animated" style="animation-delay: 0.1s;">
+                            <h2>Welcome to Vyapaar Buddy</h2>
+                            <p>Your ultimate business companion for growth and success</p>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <span>Track real-time business analytics</span>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-rupee-sign"></i>
+                                </div>
+                                <span>Manage finances with ease</span>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <span>Connect with potential customers</span>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <span>Access anywhere, anytime</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right panel with form -->
+                    <div class="col-lg-7 form-section">
+                        <div class="animated" style="animation-delay: 0.2s;">
+                            <div class="text-center">
+                                <div class="brand-name">Vyapaar Buddy</div>
+                                <p class="subtitle">Create your account in just a few steps</p>
+                            </div>
+                            
+                            <form action="/signup" method="POST">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="businessName" name="businessName" placeholder="Business Name" required>
+                                    <label for="businessName"><i class="fas fa-store me-2"></i>Business Name</label>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                                    <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                                    <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <div class="form-floating flex-grow-1">
+                                            <input type="password" class="form-control password-field" id="password" name="password" placeholder="Password" required>
+                                            <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                                        </div>
+                                        <span class="input-group-text password-toggle" onclick="togglePassword()">
+                                            <i class="fas fa-eye" id="toggleIcon"></i>
+                                        </span>
+                                    </div>
+                                    <div class="progress mt-2" style="height: 5px;">
+                                        <div class="progress-bar bg-danger" role="progressbar" id="passwordStrength" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted" id="passwordFeedback">Password strength: Add a strong password</small>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="businessType" name="businessType" required>
+                                        <option selected disabled value="">Select business type</option>
+                                        <option value="retail">Retail Store</option>
+                                        <option value="service">Service Provider</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="ecommerce">E-commerce</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <label for="businessType"><i class="fas fa-briefcase me-2"></i>Business Type</label>
+                                </div>
+                                
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" class="login-link">Terms of Service</a> and <a href="#" class="login-link">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" class="btn submit-btn text-white w-100">
+                                    <i class="fas fa-user-plus me-2"></i>Create Your Account
+                                </button>
+                                
+                                <div class="text-center mt-4">
+                                    <p>or sign up with</p>
+                                    <div class="social-login">
+                                        <a href="#" class="social-btn google"><i class="fab fa-google"></i></a>
+                                        <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <p>Already have an account? <a href="/login" class="login-link">Login here</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // Password strength meter
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            const feedback = document.getElementById('passwordFeedback');
+            
+            // Calculate strength
+            let strength = 0;
+            if (password.length > 6) strength += 20;
+            if (password.length > 10) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 20;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            
+            // Update UI
+            strengthBar.style.width = strength + '%';
+            
+            if (strength < 40) {
+                strengthBar.className = 'progress-bar bg-danger';
+                feedback.textContent = 'Password strength: Weak';
+            } else if (strength < 80) {
+                strengthBar.className = 'progress-bar bg-warning';
+                feedback.textContent = 'Password strength: Medium';
+            } else {
+                strengthBar.className = 'progress-bar bg-success';
+                feedback.textContent = 'Password strength: Strong';
+            }
+        });
+    </script>
+</body>
+</html>
